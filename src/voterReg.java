@@ -35,7 +35,10 @@ public class voterReg extends Voter {
         System.out.print("Please enter your nationality: ");
         String nationality = scanner.nextLine();
 
+                                        //        READING THE NUMBER OF VOTERS FILE
+        numberVoter = getNumberVoter();
         numberVoter++;
+        setNumberVoter();
         System.out.println(numberVoter);
 
                                     //        CALLING THE RESPECTIVE METHODS FOR RESPECTIVE WORKING
@@ -45,7 +48,7 @@ public class voterReg extends Voter {
                                     //        CODE FOR CHECKING IF THE VOTER EXISTS OR NOT
 
         try {
-            File myObj = new File("/Users/karthikeya/My Folder/projects/VotingSys/Voters_Info/" + name + ".txt");
+            File myObj = new File("Voters_Info/" + name + ".txt");
             Scanner myReader = new Scanner(myObj);
             System.out.println("You have already registered");
             myReader.close();
@@ -73,7 +76,7 @@ public class voterReg extends Voter {
                 // to create a file with the username as the file name,
                 // It will be easier to search for the object
                 FileWriter information = new FileWriter(
-                        "/Users/karthikeya/My Folder/projects/VotingSys/Voters_Info/" + voter.getName() + ".txt");
+                        "Voters_Info/" + voter.getName() + ".txt");
                 // Writing into file
                 information.write(info);
                 // Closing the file writing connection
@@ -93,7 +96,7 @@ public class voterReg extends Voter {
                 // to create a file with the username as the file name,
                 // It will be easier to search for the object
                 FileWriter user = new FileWriter(
-                        "/Users/karthikeya/My Folder/projects/VotingSys/Voters_acc/" + voter.getUsername() + ".txt");
+                        "Voters_acc/" + voter.getUsername() + ".txt");
 
                 // Writing into file
                 user.write(pass);
@@ -105,7 +108,6 @@ public class voterReg extends Voter {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
         }
     }
 
