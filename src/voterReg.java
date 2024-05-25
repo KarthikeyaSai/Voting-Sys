@@ -45,38 +45,39 @@ public class voterReg extends Voter {
                                     //        CODE FOR CHECKING IF THE VOTER EXISTS OR NOT
 
         try {
-            File myObj = new File("/Users/karthikeya/My Folder/projects/VotingSys/" + username + ".txt");
+            File myObj = new File("/Users/karthikeya/My Folder/projects/VotingSys/Voters_Info/" + name + ".txt");
             Scanner myReader = new Scanner(myObj);
             System.out.println("You have already registered");
             myReader.close();
             return registration();
         } catch (FileNotFoundException e) {
             System.out.println("You are getting registered");
-        } 
+        }
+
+
 
         String password = generatePassword(8);
         Voter voter = new Voter(name, dateOfBirth, age, gender, nationality, username, password);
         voter.ID = numberVoter;
         votersList.add(voter);
         fileWriting(voter);
+        userFile(voter);
         return voter;
     }
 
                         //    A FILE WRITER METHOD WHICH ENTERS THE GIVEN INFORMATION INTO A TEXT FILE
 
     protected static void fileWriting(Voter voter) {
-        String text  = voter.toString();
+        String info  = voter.toString();
             try {
                 // to create a file with the username as the file name,
                 // It will be easier to search for the object
-                FileWriter fWriter = new FileWriter(
-                        "/Users/karthikeya/My Folder/projects/VotingSys/" + voter.getUsername() + ".txt");
-
+                FileWriter information = new FileWriter(
+                        "/Users/karthikeya/My Folder/projects/VotingSys/Voters_Info/" + voter.getName() + ".txt");
                 // Writing into file
-                fWriter.write(text);
+                information.write(info);
                 // Closing the file writing connection
-                fWriter.close();
-
+                information.close();
                 // Display message for successful execution of
                 // program on the console
                 System.out.println(
@@ -85,6 +86,27 @@ public class voterReg extends Voter {
                 throw new RuntimeException(e);
             }
 
+    }
+    protected static void userFile(Voter voter) {
+        String pass =  voter.getPassword();{
+            try {
+                // to create a file with the username as the file name,
+                // It will be easier to search for the object
+                FileWriter user = new FileWriter(
+                        "/Users/karthikeya/My Folder/projects/VotingSys/Voters_acc/" + voter.getUsername() + ".txt");
+
+                // Writing into file
+                user.write(pass);
+                // Closing the file writing connection
+                user.close();
+
+                // Display message for successful execution of
+                // program on the console
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
     }
 
 }
