@@ -15,6 +15,7 @@ public class UserInterface extends JFrame {
     private String password;
     static ArrayList<Voter> votersList = new ArrayList<>();
     protected static int numberVoter;
+
     public UserInterface() {
         setTitle("User Interface");
         setSize(400, 300);
@@ -37,7 +38,7 @@ public class UserInterface extends JFrame {
         JTextField nameField = new JTextField();
         registrationPanel.add(nameField);
 
-        registrationPanel.add(new JLabel("Date of Birth:"));
+        registrationPanel.add(new JLabel("Date of Birth (ddMMyyyy):"));
         JTextField dobField = new JTextField();
         registrationPanel.add(dobField);
 
@@ -92,24 +93,50 @@ public class UserInterface extends JFrame {
             dateOfBirth = dobField.getText();
             nationality = nationalityField.getText();
             gender = genderField.getText();
+
+            if (dateOfBirth.length() != 8) {
+                JOptionPane.showMessageDialog(this, "You have entered the wrong 'DATE OF BIRTH.'");
+                return;
+            }
+
+            String yearStr = dateOfBirth.substring(4);
+            int year;
+            try {
+                year = Integer.parseInt(yearStr);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "You have entered an invalid 'DATE OF BIRTH.'");
+                return;
+            }
+
+            if (year <= 1907 || year >= 2006) {
+                JOptionPane.showMessageDialog(this, "You are not old enough to 'VOTE'.");
+                return;
+            }
+
+            if (!nationality.equalsIgnoreCase("Indian")) {
+                JOptionPane.showMessageDialog(this, "Only Indian nationals can register.");
+                return;
+            }
+
             JOptionPane.showMessageDialog(this, "Registration details stored!");
             cardLayout.show(mainPanel, "Home");
             numberVoter++;
-            //Generating username
-            String year = dateOfBirth.substring(4);
-            username= name + year;
-            //Generating password
 
+            // Generating username
+            username = name.substring(0,4)+ yearStr;
+
+            // Generating password
             String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             Random random = new Random();
             StringBuilder pass = new StringBuilder();
 
-            for (int i = 0; i <5; i++) {
+            for (int i = 0; i < 5; i++) {
                 int index = random.nextInt(characters.length());
                 pass.append(characters.charAt(index));
             }
-            password=pass.toString();
-            Voter voter = new Voter(name, dateOfBirth , gender, nationality,username,password);
+            password = pass.toString();
+
+            Voter voter = new Voter(name, dateOfBirth, gender, nationality, username, password);
             voter.ID = numberVoter;
             votersList.add(voter);
             System.out.println(voter);
@@ -126,4 +153,3 @@ public class UserInterface extends JFrame {
         backLoginButton.addActionListener(e -> cardLayout.show(mainPanel, "Home"));
     }
 }
-
