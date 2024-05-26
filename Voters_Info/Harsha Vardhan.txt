@@ -1,1 +1,0 @@
-Voter{name='Harsha Vardhan', dateOfBirth='31052005', gender='Male', nationality='Indian', username='Hars2005', password='kjUAl'}

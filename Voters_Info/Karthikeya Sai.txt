@@ -1,1 +1,0 @@
-Voter{name='Karthikeya Sai', dateOfBirth='31052005', gender='Male', nationality='Indian', username='Kart2005', password='lRwXS'}
