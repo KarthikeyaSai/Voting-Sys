@@ -1,11 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
-
+import java.util.Scanner;
 public class UserInterface extends JFrame {
     // Variables to store registration data
     private String name;
@@ -174,11 +175,36 @@ public class UserInterface extends JFrame {
         submitLoginButton.addActionListener(event -> {
             username = usernameField.getText();
             password = new String(passwordField.getPassword());
-            JOptionPane.showMessageDialog(this, "Login details stored!");
+
+            File voterFile = new File("Voters_acc/" + username + ".txt");
+            if (!voterFile.exists()) {
+                JOptionPane.showMessageDialog(this, "No user found with the given username.");
+                return;
+            }
+
+            try (Scanner scanner = new Scanner(new FileReader("Voters_acc/" + username + ".txt"))) {
+                if (scanner.hasNextLine()) {
+                    String storedPassword = scanner.nextLine();
+                    if (password.equals(storedPassword)) {
+                        JOptionPane.showMessageDialog(this, "Logged in successfully!");
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Wrong password.");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Password file is empty.");
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
             cardLayout.show(mainPanel, "Home");
         });
 
         backRegButton.addActionListener(event -> cardLayout.show(mainPanel, "Home"));
         backLoginButton.addActionListener(event -> cardLayout.show(mainPanel, "Home"));
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new UserInterface().setVisible(true));
     }
 }
