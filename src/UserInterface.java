@@ -1,5 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -14,7 +17,6 @@ public class UserInterface extends JFrame {
     private String username;
     private String password;
     static ArrayList<Voter> votersList = new ArrayList<>();
-    protected static int numberVoter;
 
     public UserInterface() {
         setTitle("User Interface");
@@ -88,7 +90,7 @@ public class UserInterface extends JFrame {
         registrationButton.addActionListener(e -> cardLayout.show(mainPanel, "Registration"));
         loginButton.addActionListener(e -> cardLayout.show(mainPanel, "Login"));
 
-        submitRegButton.addActionListener(e -> {
+        submitRegButton.addActionListener(event -> {
             name = nameField.getText();
             dateOfBirth = dobField.getText();
             nationality = nationalityField.getText();
@@ -120,10 +122,8 @@ public class UserInterface extends JFrame {
 
             JOptionPane.showMessageDialog(this, "Registration details stored!");
             cardLayout.show(mainPanel, "Home");
-            numberVoter++;
-
             // Generating username
-            username = name.substring(0,4)+ yearStr;
+            username = name.substring(0, 4) + yearStr;
 
             // Generating password
             String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -137,19 +137,48 @@ public class UserInterface extends JFrame {
             password = pass.toString();
 
             Voter voter = new Voter(name, dateOfBirth, gender, nationality, username, password);
-            voter.ID = numberVoter;
             votersList.add(voter);
-            System.out.println(voter);
+
+
+            // Create directories if they do not exist
+            new File("Voters_Info").mkdirs();
+            new File("Voters_acc").mkdirs();
+
+            // Check if voter already exists
+            File voterFile = new File("Voters_Info/" + name + ".txt");
+            if (voterFile.exists()) {
+                JOptionPane.showMessageDialog(this, "You have already registered.");
+                return;
+            }
+
+            // Write voter information to file
+            try (FileWriter information = new FileWriter(voterFile)) {
+                information.write(voter.toString());
+                System.out.println("YOU ARE REGISTERED FOR THE ELECTION!!!!");
+                System.out.println(voter);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+            // Write voter account information
+            try (FileWriter user = new FileWriter("Voters_acc/" + voter.getUsername() + ".txt")) {
+                user.write(password);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+            // Display username and password
+            JOptionPane.showMessageDialog(this, "Registration successful!\nUsername: " + username + "\nPassword: " + password);
         });
 
-        submitLoginButton.addActionListener(e -> {
+        submitLoginButton.addActionListener(event -> {
             username = usernameField.getText();
             password = new String(passwordField.getPassword());
             JOptionPane.showMessageDialog(this, "Login details stored!");
             cardLayout.show(mainPanel, "Home");
         });
 
-        backRegButton.addActionListener(e -> cardLayout.show(mainPanel, "Home"));
-        backLoginButton.addActionListener(e -> cardLayout.show(mainPanel, "Home"));
+        backRegButton.addActionListener(event -> cardLayout.show(mainPanel, "Home"));
+        backLoginButton.addActionListener(event -> cardLayout.show(mainPanel, "Home"));
     }
 }
