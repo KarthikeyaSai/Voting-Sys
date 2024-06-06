@@ -1,0 +1,1 @@
+Voter{ID=2, name='viswa', dateOfBirth='17052005', age=19, gender='male', nationality='indian', username='viswa2005', password='XZYq6Cbf'}

@@ -52,7 +52,9 @@ public class Voter {
     public Voter() {
 
     }
-    public Voter(String name, String dateOfBirth, int age, String gender, String nationality, String username, String password) {
+    public Voter(String name, String dateOfBirth, int age, String gender,
+                 String nationality, String username, String password)
+    {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.age = age;
@@ -101,7 +103,7 @@ public class Voter {
         return password.toString();
     }
 
-    protected static int getNumberVoter() {
+    public static int getNumberVoter() {
         int data = 0;
         try {
             File myObj = new File("numberVoter.txt");
