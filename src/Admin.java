@@ -73,7 +73,7 @@ public class Admin {
                 if (entry.getFileName().toString().startsWith("Candidate")) {
                     String candidate = entry.toString().replace(".txt", "");
                     int candidateVotes = candidatesVotes(candidate);
-                    candidate = candidate.replace("./", "");
+                    candidate = candidate.replace("./", " ");
                     if (candidateVotes > highestVotes) {
                         highestVotes = candidateVotes;
                         winner = candidate;

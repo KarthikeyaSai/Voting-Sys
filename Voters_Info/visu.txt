@@ -1,4 +1,0 @@
-Name: visu
-Date of Birth: 06032006
-Gender: male
-Nationality: indian
