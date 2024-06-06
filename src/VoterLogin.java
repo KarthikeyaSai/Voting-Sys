@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
+
 public class VoterLogin {
     private JPanel loginPanel;
+
     public VoterLogin(JPanel mainPanel) {
         loginPanel = new JPanel(new GridLayout(4, 2));
 
@@ -31,10 +33,10 @@ public class VoterLogin {
 
             System.out.println("Attempting to log in with username: " + username);
 
+            // Check if the voter file exists
             File voterFile = new File("Voters_acc/" + username + ".txt");
             if (!voterFile.exists()) {
                 JOptionPane.showMessageDialog(loginPanel, "No user found with the given username.");
-                System.out.println("No user file found for username: " + username);
                 return;
             }
 
@@ -42,26 +44,19 @@ public class VoterLogin {
                 if (scanner.hasNextLine()) {
                     String storedPassword = scanner.nextLine();
                     if (password.equals(storedPassword)) {
-                        System.out.println("Password matched for username: " + username);
-                        for (Voter voter : UserInterface.votersList) {
-                            if (voter.getUsername().equals(username)) {
-                                UserInterface.loggedInVoter = voter;
-                                break;
-                            }
-                        }
+                        UserInterface.loggedInVoter = getVoterByUsername(username);
                         if (UserInterface.loggedInVoter != null) {
                             JOptionPane.showMessageDialog(loginPanel, "Logged in successfully!");
                             cardLayout.show(mainPanel, "Voting");
-                        } else {
-                            System.out.println("Voter object not found in the list for username: " + username);
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(loginPanel, "You have already voted!");
                         }
                     } else {
                         JOptionPane.showMessageDialog(loginPanel, "Wrong password.");
-                        System.out.println("Wrong password entered for username: " + username);
                     }
                 } else {
                     JOptionPane.showMessageDialog(loginPanel, "Password file is empty.");
-                    System.out.println("Password file is empty for username: " + username);
                 }
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -69,6 +64,15 @@ public class VoterLogin {
         });
 
         backLoginButton.addActionListener(event -> cardLayout.show(mainPanel, "Home"));
+    }
+
+    private Voter getVoterByUsername(String username) {
+        for (Voter voter : UserInterface.votersList) {
+            if (voter.getUsername().equals(username)) {
+                return voter;
+            }
+        }
+        return null;
     }
 
     public JPanel getLoginPanel() {

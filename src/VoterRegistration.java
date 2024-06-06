@@ -54,7 +54,7 @@ public class VoterRegistration {
                 return;
             }
 
-            if (year <= 1907 || year >= 2006) {
+            if (year <= 1907 || year >= 2007) {
                 JOptionPane.showMessageDialog(registrationPanel, "You are not old enough to 'VOTE'.");
                 return;
             }

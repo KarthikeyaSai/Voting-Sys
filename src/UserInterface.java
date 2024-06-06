@@ -19,8 +19,10 @@ public class UserInterface extends JFrame {
         JPanel homePanel = new JPanel();
         JButton registrationButton = new JButton("Registration");
         JButton loginButton = new JButton("Login");
+        JButton adminButton = new JButton("Admin");
         homePanel.add(registrationButton);
         homePanel.add(loginButton);
+        homePanel.add(adminButton);
 
         // Registration panel
         VoterRegistration voterRegistration = new VoterRegistration(mainPanel);
@@ -50,6 +52,16 @@ public class UserInterface extends JFrame {
         // Action listeners
         registrationButton.addActionListener(e -> cardLayout.show(mainPanel, "Registration"));
         loginButton.addActionListener(e -> cardLayout.show(mainPanel, "Login"));
+        adminButton.addActionListener(e -> {
+            AdminInterface adminInterface = new AdminInterface();
+            adminInterface.setVisible(true);
+        });
     }
 
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            UserInterface ui = new UserInterface();
+            ui.setVisible(true);
+        });
+    }
 }
