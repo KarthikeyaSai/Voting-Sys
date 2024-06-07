@@ -52,10 +52,29 @@ public class UserInterface extends JFrame {
         // Action listeners
         registrationButton.addActionListener(e -> cardLayout.show(mainPanel, "Registration"));
         loginButton.addActionListener(e -> cardLayout.show(mainPanel, "Login"));
-        adminButton.addActionListener(e -> {
-            AdminInterface adminInterface = new AdminInterface();
-            adminInterface.setVisible(true);
-        });
+        adminButton.addActionListener(e -> showAdminLoginDialog(mainPanel, cardLayout));
+    }
+
+    private void showAdminLoginDialog(JPanel mainPanel, CardLayout cardLayout) {
+        JTextField usernameField = new JTextField();
+        JPasswordField passwordField = new JPasswordField();
+        Object[] message = {
+                "Username:", usernameField,
+                "Password:", passwordField
+        };
+
+        int option = JOptionPane.showConfirmDialog(this, message, "Admin Login", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+            String username = usernameField.getText();
+            String password = new String(passwordField.getPassword());
+            if (username.equals("Admin371") && password.equals("naaMg")) {
+                // Open admin interface if credentials are correct
+                AdminInterface adminInterface = new AdminInterface();
+                adminInterface.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(this, "Invalid username or password", "Login Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     public static void main(String[] args) {

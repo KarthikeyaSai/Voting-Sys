@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-
 public class AdminInterface extends JFrame {
     private JTextArea displayArea;
 
